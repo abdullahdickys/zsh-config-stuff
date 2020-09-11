@@ -110,31 +110,33 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
-alias install="sudo apt-fast install -y"
 alias cddk="cd ~/Desktop"
 alias cddw="cd ~/Downloads"
 alias cddc="cd ~/Documents"
 alias cdms="cd ~/Music"
 alias cdvd="cd ~/Videos"
+
 alias gt="git clone"
 alias v="vim"
 alias cls="clear"
 alias h="htop"
 alias t="top"
-alias apt-f="sudo apt-fast -f install -y"
-alias update="sudo apt-fast update -y"
-alias upgrade="sudo apt-fast upgrade -y"
-alias autoremove="sudo apt autoremove -y"
-alias remove="sudo apt remove -y"
+
+alias apt-f="sudo apt-fast -f install -y| lolcat"
+alias update="sudo apt-fast update -y| lolcat"
+alias upgrade="sudo apt-fast upgrade -y| lolcat"
+alias autoremove="sudo apt autoremove -y| lolcat"
+
 alias s.="sudo subl ."
 alias c.="sudo code . --user-data-dir"
-
-alias mrs="sudo php artisan migrate:refresh --seed"
-alias migrate="sudo php artisan migrate"
+alias mrs="sudo php artisan migrate:refresh --seed | lolcat"
+alias migrate="sudo php artisan migrate | lolcat"
 alias pa="sudo php artisan"
-alias serv="sudo php artisan serv"
+alias serv="sudo php artisan serv | lolcat"
 alias key="sudo php artisan key:generate"
 alias makeauth="sudo php artisan ui vue --auth && sudo npm install && sudo npm run dev"
+alias vimrc="sudo vi ~/.vimrc"
+
 # figlet "{ {  C  L I     Z S H  } }"
 export PATH=$PATH:$HOME/bin
 export EDITOR='subl -w'
@@ -149,27 +151,38 @@ alias learnvel="cd /media/nwe/SYSTEM/Users/Tiger/Videos/Learn\ Laravel/"
 alias lumserv="sudo php -S localhost:8000 -t public"
 alias code.="sudo code . --user-data-dir"
 
-nv () { 
-	sudo nvim $1 
+remove () { sudo apt remove -y $1 | lolcat }
+
+pushgit () {
+	git init && 
+	git add * -f &&
+	git commit -m "first commit" &&
+	git branch -M master &&
+	git remote add origin $1 &&
+	git pull origin master &&
+	git push -f origin master 
 }
 
-lsg () {
-	ls |grep -i $1 $2 $3 $4 $5 $6 $7 $8 $9
+install() { sudo apt-fast install -y $1 | lolcat }
+
+push () {
+	git add * -f &&
+	git commit -m "commit changing" &&
+	git pull origin master &&
+        git push -f origin master
 }
 
-findf () {
-	sudo find . |grep -i $1
-}
+nv () { sudo nvim $1 }
 
-rmvf () {
-	sudo rm -Rvf $1 $2 $3
-}
+lsg () { ls |grep -i $1 $2 $3 $4 $5 $6 $7 $8 $9| lolcat }
 
-p8 () {
-	while; do ping 8.8.8.8; sleep 2; done
-}
+findf () { sudo find . |grep -i $1 | lolcat}
 
-p9 () { ping -s 9000 127.0.0.1 }
+rmvf () { sudo rm -Rvf $1 $2 $3| lolcat }
+
+p8 () { while; do ping 8.8.8.8 | lolcat; sleep 2; done }
+
+p9 () { ping -s 9000 127.0.0.1 | lolcat}
 
 lara5.8 () {
 	sudo composer create-project --prefer-dist laravel/laravel $1  "5.8.*" ;
@@ -230,22 +243,34 @@ velas_adminlte () {
         touch draft.yaml
 }
 
+velas_coreui () {
+        laravel new $1  &&
+        sudo mysql -u root -p -e "create database $1;" &&
+        sudo chown -R $USER:$USER $1 &&
+        cd $1 &&
+	composer require infyomlabs/laravel-ui-coreui:^2.0 &&
+	php artisan ui coreui --auth &&
+        npm install && npm run dev &&
+	npm install vue-template-compiler --save-dev --production=false &&
+	npm run development &&
+        sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
+        sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
+        composer require --dev laravel-shift/blueprint &&
+	composer require jasonmccreary/laravel-test-assertions &&
+        touch draft.yaml
+}
 
 mpvv () {
 	while;
-	do mpv $1 $2 $3 $4 $5 $6 $7 $8 $9  --no-video --volume=35;
+	do mpv $1 $2 $3 $4 $5 $6 $7 $8 $9  --no-video --volume=45;
 	done
 }
 
 
 
-killp () {
-	sudo kill $1 $2 $3 $4 $5 $6 $7 $8 $9
-}
+killp () { sudo kill $1 $2 $3 $4 $5 $6 $7 $8 $9 }
 
-vizshrc () {
-	sudo vi ~/.zshrc
-}
+vizshrc () { sudo vi ~/.zshrc }
 
 cdmusic () {
 	cd /media/nwe/2fe7399c-83da-4287-9046-1edd018b7640/home/hyaah/Music/
