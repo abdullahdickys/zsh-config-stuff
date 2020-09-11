@@ -121,6 +121,7 @@ alias v="vim"
 alias cls="clear"
 alias h="htop"
 alias t="top"
+alias vizshrc="vi ~/.zshrc"
 
 alias apt-f="sudo apt-fast -f install -y| lolcat"
 alias update="sudo apt-fast update -y| lolcat"
@@ -155,7 +156,7 @@ remove () { sudo apt remove -y $1 | lolcat }
 
 pushgit () {
 	git init && 
-	git add * -f &&
+	git add * -f &&	
 	git commit -m "first commit" &&
 	git branch -M master &&
 	git remote add origin $1 &&
@@ -166,7 +167,7 @@ pushgit () {
 install() { sudo apt-fast install -y $1 | lolcat }
 
 push () {
-	git add * -f &&
+		
 	git commit -m "commit changing" &&
 	git pull origin master &&
         git push -f origin master
@@ -227,7 +228,7 @@ larablue () {
 }
 
 velas_adminlte () {
-        laravel new $1  &&
+	sudo composer create-project --prefer-dist laravel/laravel $1  "7.*.*" &&
         sudo mysql -u root -p -e "create database $1;" &&
         sudo chown -R $USER:$USER $1 &&
         cd $1 &&
@@ -235,16 +236,15 @@ velas_adminlte () {
 	php artisan ui adminlte --auth &&
         npm install && npm run dev &&
 	npm install vue-template-compiler --save-dev --production=false &&
-	npm run development &&
-        sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
-        sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
+	sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env ;
+        sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env ;
         composer require --dev laravel-shift/blueprint &&
-	composer require jasonmccreary/laravel-test-assertions &&
+	composer require jasonmccreary/laravel-test-assertions ;
         touch draft.yaml
 }
 
 velas_coreui () {
-        laravel new $1  &&
+        sudo composer create-project --prefer-dist laravel/laravel $1  "7.*.*" &&
         sudo mysql -u root -p -e "create database $1;" &&
         sudo chown -R $USER:$USER $1 &&
         cd $1 &&
@@ -252,11 +252,10 @@ velas_coreui () {
 	php artisan ui coreui --auth &&
         npm install && npm run dev &&
 	npm install vue-template-compiler --save-dev --production=false &&
-	npm run development &&
-        sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
-        sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
+        sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env ;
+        sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env ;
         composer require --dev laravel-shift/blueprint &&
-	composer require jasonmccreary/laravel-test-assertions &&
+	composer require jasonmccreary/laravel-test-assertions ;
         touch draft.yaml
 }
 
@@ -270,7 +269,6 @@ mpvv () {
 
 killp () { sudo kill $1 $2 $3 $4 $5 $6 $7 $8 $9 }
 
-vizshrc () { sudo vi ~/.zshrc }
 
 cdmusic () {
 	cd /media/nwe/2fe7399c-83da-4287-9046-1edd018b7640/home/hyaah/Music/
