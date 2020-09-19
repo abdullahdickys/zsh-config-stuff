@@ -1,4 +1,4 @@
-# @author     Abdullah dicky syarifuddin <abdullah.dicky.syarifuddin@gmail.com>
+fortune -s computers | cowsay -f dragon | lolcat
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -111,6 +111,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
+alias LS="ls | lolcat"
+alias LL="ls -l | lolcat"
 alias cddk="cd ~/Desktop"
 alias cddw="cd ~/Downloads"
 alias cddc="cd ~/Documents"
@@ -139,6 +141,9 @@ alias key="sudo php artisan key:generate"
 alias makeauth="sudo php artisan ui vue --auth && sudo npm install && sudo npm run dev"
 alias vimrc="sudo vi ~/.vimrc"
 
+alias -g G='| grep '
+alias -g L='| lolcat '
+
 # figlet "{ {  C  L I     Z S H  } }"
 export PATH=$PATH:$HOME/bin
 export EDITOR='subl -w'
@@ -153,9 +158,12 @@ alias learnvel="cd /media/nwe/SYSTEM/Users/Tiger/Videos/Learn\ Laravel/"
 alias lumserv="sudo php -S localhost:8000 -t public"
 alias code.="sudo code . --user-data-dir"
 
-remove () { sudo apt remove -y $1 | lolcat }
+install() { sudo apt-fast install -y $1 | lolcat }
 
-pushgit () {
+remove () { sudo apt remove -y $1 $2 $3 $4 $5 $6 $7 $8 $9 | lolcat }
+
+# git alias
+first_git () {
 	git init && 
 	git add * -f &&	
 	git commit -m "first commit" &&
@@ -165,13 +173,18 @@ pushgit () {
 	git push -f origin master 
 }
 
-install() { sudo apt-fast install -y $1 | lolcat }
-
-push () {
-		
+push_git () {
+	git add * -f &&		
 	git commit -m "commit changing" &&
-	git pull origin master &&
-        git push -f origin master
+	git pull origin master L &&
+        git push -f origin master L
+}
+
+force_git () {
+	git add * -f L &&
+	git commit -m "commit changing" L &&
+	git push -f origin master --allow-unrelated-histories L &&
+	git push origin master --force L
 }
 
 nv () { sudo nvim $1 }
@@ -186,6 +199,7 @@ p8 () { while; do ping 8.8.8.8 | lolcat; sleep 2; done }
 
 p9 () { ping -s 9000 127.0.0.1 | lolcat}
 
+# laravel alias
 lara5.8 () {
 	sudo composer create-project --prefer-dist laravel/laravel $1  "5.8.*" ;
 	sudo mysql -u root -p -e "create database $1;" && 
@@ -228,6 +242,16 @@ larablue () {
 	touch draft.yaml
 }
 
+velas_8 () {
+	laravel new $1 --jet &&
+	sudo mysql -u root -p -e "create database $1;" && 
+	sudo chown -R $USER:$USER $1 &&
+	cd $1 && 
+	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
+	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
+	sudo php artisan migrate
+}
+
 velas_adminlte () {
 	sudo composer create-project --prefer-dist laravel/laravel $1  "7.*.*" &&
         sudo mysql -u root -p -e "create database $1;" &&
@@ -259,6 +283,14 @@ velas_coreui () {
 	composer require jasonmccreary/laravel-test-assertions ;
         touch draft.yaml
 }
+
+# vue alias
+v-create () { 
+	vue create $1 L
+}
+
+alias v-serv="npm run serve L"
+alias v-build="npm run build L"
 
 mpvv () {
 	while;
@@ -340,3 +372,5 @@ fi
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export DEFAULT_USER="$(whoami)"
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
