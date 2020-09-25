@@ -1,4 +1,4 @@
-fortune -s computers | cowsay -f dragon | lolcat
+# fortune -s computers | cowsay -f dragon | lolcat
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -124,7 +124,7 @@ alias v="vim"
 alias cls="clear"
 alias h="htop"
 alias t="top"
-alias vizshrc="vi ~/.zshrc"
+vizshrc () { vi ~/.zshrc }
 
 alias apt-f="sudo apt-fast -f install -y| lolcat"
 alias update="sudo apt-fast update -y| lolcat"
@@ -175,14 +175,14 @@ first_git () {
 
 push_git () {
 	git add * -f &&		
-	git commit -m "commit changing" &&
+	git commit -m "latest" &&
 	git pull origin master L &&
         git push -f origin master L
 }
 
 force_git () {
 	git add * -f L &&
-	git commit -m "commit changing" L &&
+	git commit -m "latest" L &&
 	git push -f origin master --allow-unrelated-histories L &&
 	git push origin master --force L
 }
@@ -239,7 +239,9 @@ larablue () {
 	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
 	sudo composer require --dev laravel-shift/blueprint &&
 	sudo composer require jasonmccreary/laravel-test-assertions &&
-	touch draft.yaml
+	touch draft.yaml &&
+	echo '/draft.yaml' >> .gitignore &&
+	echo '/.blueprint' >> .gitignore
 }
 
 velas_8 () {
@@ -286,11 +288,12 @@ velas_coreui () {
 
 # vue alias
 v-create () { 
-	vue create $1 L
+	vue create $1 
 }
 
 alias v-serv="npm run serve L"
 alias v-build="npm run build L"
+alias npmdate="sudo npm install -g npm@latest L"
 
 mpvv () {
 	while;
@@ -371,6 +374,9 @@ fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export DEFAULT_USER="$(whoami)"
+# export DEFAULT_USER="$(whoami)"
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
+# source $(dirname $(gem which colorls))/tab_complete.sh
+alias lc='colorls -lA --sd'
+
