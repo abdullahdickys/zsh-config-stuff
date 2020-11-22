@@ -1,3 +1,5 @@
+setopt extendedglob
+
 # fortune -s computers | cowsay -f dragon | lolcat
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -10,7 +12,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/nwe/.oh-my-zsh"
+export ZSH="/home/$USER/.oh-my-zsh"
 
 # composer laravel new
 export PATH="$HOME/.config/composer/vendor/bin:$PATH"
@@ -20,8 +22,9 @@ export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 
-# ZSH_THEME="agnoster"
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# ZSH_THEME="spaceship"
+ZSH_THEME="bullet-train"
+# ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -111,8 +114,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
-alias LS="ls | lolcat"
-alias LL="ls -l | lolcat"
+alias lx="ls | lolcat"
+alias lxx="ls -l | lolcat"
 alias cddk="cd ~/Desktop"
 alias cddw="cd ~/Downloads"
 alias cddc="cd ~/Documents"
@@ -133,7 +136,7 @@ alias autoremove="sudo apt autoremove -y| lolcat"
 
 alias s.="sudo subl ."
 alias c.="sudo code . --user-data-dir"
-alias mrs="sudo php artisan migrate:refresh --seed | lolcat"
+alias mrs="sudo php artisan migrate:refresh --seed && sudo php artisan db:seed --class=UserTableSeeder"
 alias migrate="sudo php artisan migrate | lolcat"
 alias pa="sudo php artisan"
 alias serv="sudo php artisan serv | lolcat"
@@ -151,12 +154,14 @@ if [ "$TERM_PROGRAM" = "Terminus-Sublime" ]; then
     bindkey "\e[1;3C" forward-word
     bindkey "\e[1;3D" backward-word
 fi
-alias cx="cd ~/Desktop/javascript-app/"
+alias cx="cd /home/dr4g0na/Desktop/project"
 alias cxx="cd /home/nwe/Desktop/laravel-app/"
 alias x="sudo zsh"
 alias learnvel="cd /media/nwe/SYSTEM/Users/Tiger/Videos/Learn\ Laravel/"
 alias lumserv="sudo php -S localhost:8000 -t public"
 alias code.="sudo code . --user-data-dir"
+
+deb () { sudo dpkg -i $1 }
 
 install() { sudo apt-fast install -y $1 | lolcat }
 
@@ -170,6 +175,7 @@ first_git () {
 	git branch -M master &&
 	git remote add origin $1 &&
 	git pull origin master &&
+	sleep 2 &&
 	git push -f origin master 
 }
 
@@ -187,11 +193,11 @@ force_git () {
 	git push origin master --force L
 }
 
-nv () { sudo nvim $1 }
+nv () { nvim $1 }
 
 lsg () { ls |grep -i $1 $2 $3 $4 $5 $6 $7 $8 $9| lolcat }
 
-findf () { sudo find . |grep -i $1 | lolcat}
+findf () { sudo find . |grep -i $1 }
 
 rmvf () { sudo rm -Rvf $1 $2 $3| lolcat }
 
@@ -201,12 +207,38 @@ p9 () { ping -s 9000 127.0.0.1 | lolcat}
 
 # laravel alias
 lara5.8 () {
-	sudo composer create-project --prefer-dist laravel/laravel $1  "5.8.*" ;
-	sudo mysql -u root -p -e "create database $1;" && 
+	composer create-project --prefer-dist laravel/laravel $1  "5.8.*" ;
+	sudo mysql -u root -p -e "create database $1;" &&
 	sudo chown -R $USER:$USER $1 &&
 	cd $1 && 
-	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
-	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env
+	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env &&
+	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
+	sudo php artisan make:seeder UserTableSeeder &&
+	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
+	sudo echo "<?php
+
+  use Illuminate\Database\Seeder;
+
+  class UserTableSeeder extends Seeder
+  {
+      /**
+       * Run the database seeds.
+       *
+       * @return void
+       */
+      public function run()
+      {
+          App\User::create([
+         'name' => 'Mr. Junk',
+         'email' => 'junk@mail.com',
+         'password' => bcrypt('secret'),
+         /* 'role_id' => 1 */
+      ]);
+
+      }
+ } " > database/seeds/UserTableSeeder.php &&
+	sudo php artisan db:seed --class=UserTableSeeder 
+	
 }
 
 laranew () {
@@ -214,8 +246,32 @@ laranew () {
 	sudo mysql -u root -p -e "create database $1;" && 
 	sudo chown -R $USER:$USER $1 &&
 	cd $1 && 
-	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
-	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env
+	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env &&
+	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
+	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
+	sudo echo "<?php
+
+  use Illuminate\Database\Seeder;
+
+  class UserTableSeeder extends Seeder
+  {
+      /**
+       * Run the database seeds.
+       *
+       * @return void
+       */
+      public function run()
+      {
+          App\User::create([
+         'name' => 'Mr. Junk',
+         'email' => 'junk@gmail.com',
+         'password' => bcrypt('secret'),
+         /* 'role_id' => 1 */
+      ]);
+
+      }
+ } " > database/seeds/UserTableSeeder.php && 
+	 sudo php artisan db:seed --class=UserTableSeeder
 }
 
 lara7_spa () {
@@ -223,7 +279,7 @@ lara7_spa () {
         sudo mysql -u root -p -e "create database $1;" &&
         sudo chown -R $USER:$USER $1 &&
         cd $1 &&
-        sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
+        sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env &&
         sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
 	sudo npm install && sudo npm run dev && npm install vue bootstrap-vue bootstrap &&
  	sudo npm install vue-template-compiler --save-dev --production=false
@@ -235,13 +291,37 @@ larablue () {
 	sudo mysql -u root -p -e "create database $1;" && 
 	sudo chown -R $USER:$USER $1 &&
 	cd $1 && 
-	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
+	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env &&
 	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
 	sudo composer require --dev laravel-shift/blueprint &&
 	sudo composer require jasonmccreary/laravel-test-assertions &&
 	touch draft.yaml &&
 	echo '/draft.yaml' >> .gitignore &&
-	echo '/.blueprint' >> .gitignore
+	echo '/.blueprint' >> .gitignore &&
+	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
+	sudo echo "<?php
+
+  use Illuminate\Database\Seeder;
+
+  class UserTableSeeder extends Seeder
+  {
+      /**
+       * Run the database seeds.
+       *
+       * @return void
+       */
+      public function run()
+      {
+          App\User::create([
+         'name' => 'Mr. Junk',
+         'email' => 'junk@gmail.com',
+         'password' => bcrypt('secret'),
+         /* 'role_id' => 1 */
+      ]);
+
+      }
+ } " > database/seeds/UserTableSeeder.php && 
+	 sudo php artisan db:seed --class=UserTableSeeder
 }
 
 velas_8 () {
@@ -249,9 +329,32 @@ velas_8 () {
 	sudo mysql -u root -p -e "create database $1;" && 
 	sudo chown -R $USER:$USER $1 &&
 	cd $1 && 
-	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env &&
-	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
-	sudo php artisan migrate
+	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env &&
+	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&	
+	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
+	sudo echo "<?php
+
+  use Illuminate\Database\Seeder;
+
+  class UserTableSeeder extends Seeder
+  {
+      /**
+       * Run the database seeds.
+       *
+       * @return void
+       */
+      public function run()
+      {
+          App\User::create([
+         'name' => 'Mr. Junk',
+         'email' => 'junk@gmail.com',
+         'password' => bcrypt('secret'),
+         /* 'role_id' => 1 */
+      ]);
+
+      }
+ } " > database/seeds/UserTableSeeder.php && 
+	 sudo php artisan db:seed --class=UserTableSeeder
 }
 
 velas_adminlte () {
@@ -263,11 +366,35 @@ velas_adminlte () {
 	php artisan ui adminlte --auth &&
         npm install && npm run dev &&
 	npm install vue-template-compiler --save-dev --production=false &&
-	sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env ;
+	sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env ;
         sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env ;
         composer require --dev laravel-shift/blueprint &&
 	composer require jasonmccreary/laravel-test-assertions ;
-        touch draft.yaml
+        touch draft.yaml &&
+	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
+	sudo echo "<?php
+
+  use Illuminate\Database\Seeder;
+
+  class UserTableSeeder extends Seeder
+  {
+      /**
+       * Run the database seeds.
+       *
+       * @return void
+       */
+      public function run()
+      {
+          App\User::create([
+         'name' => 'Mr. Junk',
+         'email' => 'junk@gmail.com',
+         'password' => bcrypt('secret'),
+         /* 'role_id' => 1 */
+      ]);
+
+      }
+ } " > database/seeds/UserTableSeeder.php &&
+	 sudo php artisan db:seed --class=UserTableSeeder
 }
 
 velas_coreui () {
@@ -279,18 +406,40 @@ velas_coreui () {
 	php artisan ui coreui --auth &&
         npm install && npm run dev &&
 	npm install vue-template-compiler --save-dev --production=false &&
-        sed -i 's/DB_PASSWORD=/DB_PASSWORD=my_password/g' .env ;
+        sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env ;
         sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env ;
         composer require --dev laravel-shift/blueprint &&
 	composer require jasonmccreary/laravel-test-assertions ;
-        touch draft.yaml
+        touch draft.yaml &&
+	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
+	sudo echo "<?php
+
+  use Illuminate\Database\Seeder;
+
+  class UserTableSeeder extends Seeder
+  {
+      /**
+       * Run the database seeds.
+       *
+       * @return void
+       */
+      public function run()
+      {
+          App\User::create([
+         'name' => 'Mr. Junk',
+         'email' => 'junk@gmail.com',
+         'password' => bcrypt('secret'),
+         /* 'role_id' => 1 */
+      ]);
+
+      }
+ } " > database/seeds/UserTableSeeder.php && 
+	 sudo php artisan db:seed --class=UserTableSeeder
 }
 
 # vue alias
-v-create () { 
-	vue create $1 
-}
-
+v-create () { vue create $1 }
+v-sion() { npx @vuesion/create $1 }
 alias v-serv="npm run serve L"
 alias v-build="npm run build L"
 alias npmdate="sudo npm install -g npm@latest L"
@@ -379,4 +528,4 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 # source $(dirname $(gem which colorls))/tab_complete.sh
 alias lc='colorls -lA --sd'
-
+alias ct='sudo cat'
