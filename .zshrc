@@ -8,6 +8,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# export PATH="$HOME/.composer/vendor/bin:$PATH"
+export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+export PATH=~/.composer/vendor/bin:$PATH
+# alias laravel='~/.composer/vendor/bin/laravel'
+
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -15,7 +21,7 @@ fi
 export ZSH="/home/$USER/.oh-my-zsh"
 
 # composer laravel new
-export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+# export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -23,7 +29,7 @@ export PATH="$HOME/.config/composer/vendor/bin:$PATH"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 
 # ZSH_THEME="spaceship"
-ZSH_THEME="bullet-train"
+ ZSH_THEME="robbyrussell"
 # ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
@@ -154,36 +160,34 @@ if [ "$TERM_PROGRAM" = "Terminus-Sublime" ]; then
     bindkey "\e[1;3C" forward-word
     bindkey "\e[1;3D" backward-word
 fi
-alias cx="cd /home/dr4g0na/Desktop/project"
-alias cxx="cd /home/nwe/Desktop/laravel-app/"
+
+alias cx="cd ~/Desktop/project"
 alias x="sudo zsh"
-alias learnvel="cd /media/nwe/SYSTEM/Users/Tiger/Videos/Learn\ Laravel/"
-alias lumserv="sudo php -S localhost:8000 -t public"
-alias code.="sudo code . --user-data-dir"
+alias lserv="sudo php -S localhost:8000 -t public"
+alias c.="sudo code . --user-data-dir"
+alias pmaster="sudo git pull origin master"
 
-deb () { sudo dpkg -i $1 }
+deb () { sudo dpkg -i $1 $2 $3 $4 $5 $6 $7 $8 $9 | lolcat }
 
-install() { sudo apt-fast install -y $1 | lolcat }
+install() { sudo apt-fast install -y $1 $2 $3 $4 $5 $6 $7 $8 $9 | lolcat }
 
 remove () { sudo apt remove -y $1 $2 $3 $4 $5 $6 $7 $8 $9 | lolcat }
 
 # git alias
 first_git () {
-	git init && 
-	git add * -f &&	
-	git commit -m "first commit" &&
-	git branch -M master &&
-	git remote add origin $1 &&
-	git pull origin master &&
-	sleep 2 &&
-	git push -f origin master 
+	sudo git init && 
+	sudo git add * -f &&	
+	sudo git commit -m "first commit" &&
+	sudo git branch -M master &&
+	sudo git remote add origin $1 &&
+	pmaster&
+	sudo git push -f origin master 
 }
 
 push_git () {
-	git add * -f &&		
-	git commit -m "latest" &&
-	git pull origin master L &&
-        git push -f origin master L
+	sudo git add * -f &&		
+	sudo git commit -m "latest" &&
+ 	sudo git push -f origin master L
 }
 
 force_git () {
@@ -216,27 +220,24 @@ lara5.8 () {
 	sudo php artisan make:seeder UserTableSeeder &&
 	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
 	sudo echo "<?php
-
-  use Illuminate\Database\Seeder;
-
-  class UserTableSeeder extends Seeder
-  {
-      /**
-       * Run the database seeds.
-       *
-       * @return void
-       */
-      public function run()
-      {
-          App\User::create([
-         'name' => 'Mr. Junk',
-         'email' => 'junk@mail.com',
-         'password' => bcrypt('secret'),
-         /* 'role_id' => 1 */
-      ]);
-
-      }
- } " > database/seeds/UserTableSeeder.php &&
+	 	   use Illuminate\Database\Seeder;
+	 	   class UserTableSeeder extends Seeder
+	 	   {
+	 	       /**
+	 	        * Run the database seeds.
+	 	        *
+	 	        * @return void
+	 	        */
+	 	       public function run()
+	 	       {
+	 	           App\User::create([
+	 	          'name' => 'Mr. Junk',
+	 	          'email' => 'junk@mail.com',
+	 	          'password' => bcrypt('secret'),
+	 	          /* 'role_id' => 1 */
+	 	       ]);
+	 	      }
+  	            } " > database/seeds/UserTableSeeder.php &&
 	sudo php artisan db:seed --class=UserTableSeeder 
 	
 }
@@ -246,31 +247,31 @@ laranew () {
 	sudo mysql -u root -p -e "create database $1;" && 
 	sudo chown -R $USER:$USER $1 &&
 	cd $1 && 
-	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env &&
 	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
-	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
+	sudo chown $USER:$USER database/seeders/UserTableSeeder.php &&
 	sudo echo "<?php
+             namespace Database\Seeders;
 
-  use Illuminate\Database\Seeder;
+	     use Illuminate\Database\Seeder;
+	     
+	     class UserTableSeeder extends Seeder
 
-  class UserTableSeeder extends Seeder
-  {
-      /**
-       * Run the database seeds.
-       *
-       * @return void
-       */
-      public function run()
-      {
-          App\User::create([
-         'name' => 'Mr. Junk',
-         'email' => 'junk@gmail.com',
-         'password' => bcrypt('secret'),
-         /* 'role_id' => 1 */
-      ]);
-
-      }
- } " > database/seeds/UserTableSeeder.php && 
+	     {
+	         /**
+	          * Run the database seeds.
+	          *
+	          * @return void
+	          */
+	         public function run()
+	         {
+	             App\User::create([
+	            'name' => 'Mr. Junk',
+	            'email' => 'junk@gmail.com',
+	            'password' => bcrypt('secret'),
+	            /* 'role_id' => 1 */
+	         ]);
+	         }
+	    } " > database/seeders/UserTableSeeder.php && 
 	 sudo php artisan db:seed --class=UserTableSeeder
 }
 
@@ -300,9 +301,7 @@ larablue () {
 	echo '/.blueprint' >> .gitignore &&
 	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
 	sudo echo "<?php
-
   use Illuminate\Database\Seeder;
-
   class UserTableSeeder extends Seeder
   {
       /**
@@ -318,7 +317,6 @@ larablue () {
          'password' => bcrypt('secret'),
          /* 'role_id' => 1 */
       ]);
-
       }
  } " > database/seeds/UserTableSeeder.php && 
 	 sudo php artisan db:seed --class=UserTableSeeder
@@ -333,9 +331,7 @@ velas_8 () {
 	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&	
 	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
 	sudo echo "<?php
-
   use Illuminate\Database\Seeder;
-
   class UserTableSeeder extends Seeder
   {
       /**
@@ -351,7 +347,6 @@ velas_8 () {
          'password' => bcrypt('secret'),
          /* 'role_id' => 1 */
       ]);
-
       }
  } " > database/seeds/UserTableSeeder.php && 
 	 sudo php artisan db:seed --class=UserTableSeeder
@@ -373,9 +368,7 @@ velas_adminlte () {
         touch draft.yaml &&
 	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
 	sudo echo "<?php
-
   use Illuminate\Database\Seeder;
-
   class UserTableSeeder extends Seeder
   {
       /**
@@ -391,7 +384,6 @@ velas_adminlte () {
          'password' => bcrypt('secret'),
          /* 'role_id' => 1 */
       ]);
-
       }
  } " > database/seeds/UserTableSeeder.php &&
 	 sudo php artisan db:seed --class=UserTableSeeder
@@ -413,9 +405,7 @@ velas_coreui () {
         touch draft.yaml &&
 	sudo chown $USER:$USER database/seeds/UserTableSeeder.php &&
 	sudo echo "<?php
-
   use Illuminate\Database\Seeder;
-
   class UserTableSeeder extends Seeder
   {
       /**
@@ -431,7 +421,6 @@ velas_coreui () {
          'password' => bcrypt('secret'),
          /* 'role_id' => 1 */
       ]);
-
       }
  } " > database/seeds/UserTableSeeder.php && 
 	 sudo php artisan db:seed --class=UserTableSeeder
@@ -440,6 +429,7 @@ velas_coreui () {
 # vue alias
 v-create () { vue create $1 }
 v-sion() { npx @vuesion/create $1 }
+v-nuxt () { sudo npx create-nuxt-app $1 }
 alias v-serv="npm run serve L"
 alias v-build="npm run build L"
 alias npmdate="sudo npm install -g npm@latest L"
@@ -529,3 +519,6 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 # source $(dirname $(gem which colorls))/tab_complete.sh
 alias lc='colorls -lA --sd'
 alias ct='sudo cat'
+export PATH="$HOME/.composer/vendor/bin:$PATH"
+# alias laravel='~/.config/composer/vendor/bin/laravel'
+alias vivimrc='vi ~/.vimrc'
