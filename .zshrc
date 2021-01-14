@@ -29,7 +29,8 @@ export ZSH="/home/$USER/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 
 # ZSH_THEME="spaceship"
- ZSH_THEME="robbyrussell"
+# ZSH_THEME="robbyrussell"
+ZSH_THEME="bullet-train"
 # ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
@@ -178,23 +179,23 @@ first_git () {
 	sudo git init && 
 	sudo git add * -f &&	
 	sudo git commit -m "first commit" &&
-	sudo git branch -M master &&
+	sudo git branch -M main &&
 	sudo git remote add origin $1 &&
 	pmaster&
-	sudo git push -f origin master 
+	sudo git push -f origin main 
 }
 
 push_git () {
 	sudo git add * -f &&		
 	sudo git commit -m "latest" &&
- 	sudo git push -f origin master L
+ 	sudo git push -f origin main L
 }
 
 force_git () {
 	git add * -f L &&
 	git commit -m "latest" L &&
-	git push -f origin master --allow-unrelated-histories L &&
-	git push origin master --force L
+	git push -f origin main --allow-unrelated-histories L &&
+	git push origin main --force L
 }
 
 nv () { nvim $1 }
@@ -247,11 +248,13 @@ laranew () {
 	sudo mysql -u root -p -e "create database $1;" && 
 	sudo chown -R $USER:$USER $1 &&
 	cd $1 && 
-	sudo sed -i 's/DB_DATABASE=laravel/DB_DATABASE='$1'/g' .env &&
+	sudo sed -i 's/DB_PASSWORD=/DB_PASSWORD=password_me/g' .env &&
+	sudo php artisan make:seeder UserTableSeeder &&
 	sudo chown $USER:$USER database/seeders/UserTableSeeder.php &&
 	sudo echo "<?php
-             namespace Database\Seeders;
+         namespace Database\Seeders;
 
+	     use App\Models\User; 
 	     use Illuminate\Database\Seeder;
 	     
 	     class UserTableSeeder extends Seeder
@@ -264,15 +267,15 @@ laranew () {
 	          */
 	         public function run()
 	         {
-	             App\User::create([
+	            User::create([
 	            'name' => 'Mr. Junk',
 	            'email' => 'junk@gmail.com',
 	            'password' => bcrypt('secret'),
 	            /* 'role_id' => 1 */
 	         ]);
 	         }
-	    } " > database/seeders/UserTableSeeder.php && 
-	 sudo php artisan db:seed --class=UserTableSeeder
+	    } " > database/seeders/UserTableSeeder.php &&
+	 sudo php artisan migrate --seed
 }
 
 lara7_spa () {
@@ -433,6 +436,15 @@ v-nuxt () { sudo npx create-nuxt-app $1 }
 alias v-serv="npm run serve L"
 alias v-build="npm run build L"
 alias npmdate="sudo npm install -g npm@latest L"
+
+v-gate () {
+	vue create $1 &&
+	cd $1 &&
+	v-serv& ;
+	sleep 5 &&
+	brave-browser http://localhost:8080 ;
+	s.
+}
 
 mpvv () {
 	while;
