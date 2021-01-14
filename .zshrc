@@ -275,7 +275,10 @@ laranew () {
 	         ]);
 	         }
 	    } " > database/seeders/UserTableSeeder.php &&
-	 sudo php artisan migrate --seed
+	 sudo php artisan migrate --seed &&
+	 composer require laravel/breeze --dev &&
+	 sudo php artisan breeze:install &&
+	 sudo npm install && sudo npm run dev
 }
 
 lara7_spa () {
