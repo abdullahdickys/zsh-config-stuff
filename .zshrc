@@ -1,4 +1,5 @@
 setopt extendedglob
+set -o vi
 
 # fortune -s computers | cowsay -f dragon | lolcat
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
